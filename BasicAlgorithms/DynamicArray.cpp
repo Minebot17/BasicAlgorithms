@@ -1,5 +1,6 @@
 #include <cstdlib>
 
+template <typename T>
 class dynamic_array {
 
 private:
@@ -8,13 +9,15 @@ private:
 	int elements_count;
 
 public:
-	dynamic_array(const int type_size) {
-		this->type_size = type_size;
+	dynamic_array() {
+		this->type_size = sizeof(T);
 		elements_count = 0;
 		memory = (unsigned char*) malloc('\0');
 	}
 
-	void add(unsigned char* object) {
+	void add(T object) {
+		T o = object;
+		unsigned char* objectp = (unsigned char*) &o;
 		memory = (unsigned char*) realloc(memory, (elements_count + 1) * type_size + 1);
 		if (memory == nullptr)
 			throw "Out of memory!";
@@ -22,15 +25,17 @@ public:
 		unsigned char* local_memory = memory;
 		local_memory += elements_count * type_size;
 		for (int i = 0; i < type_size; i++) {
-			*local_memory = *object;
-			object++;
+			*local_memory = *objectp;
+			++objectp;
 			local_memory++;
 		}
 		*local_memory = '\0';
 		elements_count++;
 	}
 
-	void insert(unsigned char* object, int index) {
+	void insert(T object, int index) {
+		T o = object;
+		unsigned char* objectp = (unsigned char*)&o;
 		unsigned char* new_memory = (unsigned char*) malloc((elements_count + 1) * type_size + 1);
 		if (new_memory == nullptr)
 			throw "Out of memory!";
@@ -41,8 +46,8 @@ public:
 			new_memory++;
 		}
 		for (int i = 0; i < type_size; i++) {
-			*new_memory = *object;
-			object++;
+			*new_memory = *objectp;
+			++objectp;
 			new_memory++;
 		}
 		for (int i = type_size * (index + 1); i < (elements_count + 1) * type_size; i++) {
@@ -82,10 +87,10 @@ public:
 		memory = new_memory;
 	}
 
-	unsigned char* get(int index) {
+	T get(int index) {
 		unsigned char* result = memory;
 		result += index * type_size;
-		return result;
+		return *((T*) result);
 	}
 
 	int get_size() {
