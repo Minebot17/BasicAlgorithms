@@ -1,4 +1,5 @@
-﻿  DynamicArray.cpp
+﻿  dynamic_array.cpp
+  linked_list.cpp
   main.cpp
   Создание кода...
   BasicAlgorithms.vcxproj -> C:\Users\serpi\Documents\CppProjects\BasicAlgorithms\Debug\BasicAlgorithms.exe

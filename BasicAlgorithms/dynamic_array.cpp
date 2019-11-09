@@ -93,7 +93,7 @@ public:
 		return *((T*) result);
 	}
 
-	int get_size() {
+	int count() {
 		return elements_count;
 	}
 };
